@@ -1,0 +1,65 @@
+name: 'pwsh-module-build'
+description: 'Builds a PowerShell Module using ModuleBuilder'
+inputs:
+  moduleName:
+    description: 'Name of PowerShell Module to Publish'
+    required: true
+
+  nuGetApiKey:
+    description: 'PowerShell Gallery NuGetApiKey'
+    required: true
+
+  testGallery:
+    description: 'Publish to Posh Test Gallery'
+    required: false
+
+runs:
+  using: composite
+  steps:
+  - name: Checkout
+    uses: actions/checkout@v2
+    with:
+        fetch-depth: 0
+
+  - name: Install GitVersion
+    uses: gittools/actions/gitversion/setup@v0.9.7
+    with:
+      versionSpec: '5.x'
+
+  - name: Execute GitVersion
+    uses: gittools/actions/gitversion/execute@v0.9.7
+    with:
+      useConfigFile: true
+
+  - name: Install-RequiredModules
+    uses: PoshCode/Actions/install-requiredmodules@v1
+
+  - name: Build Module
+    id: build
+    uses: PoshCode/actions/build-module@v1
+    with:
+      version: ${{ env.GITVERSION_LEGACYSEMVERPADDED }}
+      destination: ${{github.workspace}}/output
+
+  - name: Upload Build Output
+    uses: actions/upload-artifact@v2
+    with:
+      name: Modules
+      path: ${{github.workspace}}/output
+
+  - name: Upload Tests
+    uses: actions/upload-artifact@v2
+    with:
+      name: PesterTests
+      path: ${{github.workspace}}/tests
+
+  - name: Upload RequiredModules.psd1
+    uses: actions/upload-artifact@v2
+    with:
+      name: RequiredModules
+      path: ${{github.workspace}}/RequiredModules.psd1
+
+  - name: Upload PSScriptAnalyzerSettings.psd1
+    uses: actions/upload-artifact@v2
+    with:
+      name: ScriptAnalyzer
