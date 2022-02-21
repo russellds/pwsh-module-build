@@ -63,3 +63,4 @@ runs:
     uses: actions/upload-artifact@v2
     with:
       name: ScriptAnalyzer
+      path: ${{github.workspace}}/PSScriptAnalyzerSettings.psd1
