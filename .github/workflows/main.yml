@@ -25,12 +25,16 @@ jobs:
     - name: Tag Action
       shell: pwsh
       run: |
-        Write-Host "GitVersion Major: $env:GitVersion_Major"
+        Write-Host "GitVersion: $env:GitVersion_SemVer"
 
         $gitTags = git tag *>&1
 
+        if ($gitTags -contains "v$( $env:GitVersion_SemVer )") {
+          Write-Host "Tag v$( $env:GitVersion_SemVer ) found!"
+        }
+
         if ($gitTags -contains "v$( $env:GitVersion_Major )") {
-          Write-Host 'Tag Found!'
+          Write-Host 'Tag v$( $env:GitVersion_Major ) found!'
         } else {
-          Write-Host 'Tag not found!'
+          Write-Host 'Tag v$( $env:GitVersion_Major ) not found!'
         }
