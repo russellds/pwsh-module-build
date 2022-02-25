@@ -27,20 +27,23 @@ jobs:
       run: |
         Write-Host "GitVersion: $env:GitVersion_SemVer"
 
+        $tagSemVer = "v{0}" -f $env:GitVersion_SemVer
+        $tagMajor = "v{0}" -f $env:GitVersion_Major
+
         git config user.name 'GitHub Action'
         git config user.email 'githubaction@users.noreply.github.com'
 
         $gitTags = git tag *>&1
 
-        if ($gitTags -contains "v$( $env:GitVersion_SemVer )") {
-          Write-Host "Tag v$( $env:GitVersion_SemVer ) found!"
+        if ($gitTags -contains $tagSemVer) {
+          Write-Host "Tag $( $tagSemVer ) found!"
         } else {
-          if ($gitTags -contains "v$( $env:GitVersion_Major )") {
-            Write-Host "Removing Tag: v$( $env:GitVersion_Major )"
+          if ($gitTags -contains $tagMajor) {
+            Write-Host "Removing Tag: $( $tagMajor )"
 
-            git push origin ":refs/tags/v$( $env:GitVersion_Major )"
+            git push origin ":refs/tags/$tagMajor"
           }
 
-          git tag -a -m 'Version v$( $env:GitVersion_SemVer )' "vv$( $env:GitVersion_SemVer )"
-          git tag -a -m 'Version v$( $env:GitVersion_Major )' "vv$( $env:GitVersion_Major )"
+          git tag -a -m "Version $( $tagSemVer )" $tagSemVer
+          git tag -a -m "Version $( $tagMajor )"" $tagMajor
         }
