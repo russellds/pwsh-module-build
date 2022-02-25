@@ -1,0 +1,29 @@
+name: 'Tag GitHub Action'
+
+on: [workflow_dispatch]
+
+jobs:
+  action:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+          fetch-depth: 0
+
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.7
+      with:
+        versionSpec: '5.x'
+
+    - name: Execute GitVersion
+      id: gitVersion
+      uses: gittools/actions/gitversion/execute@v0.9.7
+      with:
+        useConfigFile: true
+
+    - name: Tag Action
+      shell: pwsh
+      run: |
+        Write-Host "GitVersion Major: ${{ env.GITVERSION_MAJOR }}"
+        Get-Item -Path Env:
