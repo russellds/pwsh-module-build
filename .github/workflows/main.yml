@@ -45,5 +45,5 @@ jobs:
           }
 
           git tag -a -m "Version $( $tagSemVer )" $tagSemVer
-          git tag -a -m "Version $( $tagMajor )"" $tagMajor
+          git tag -a -m "Version $( $tagMajor )" $tagMajor
         }
