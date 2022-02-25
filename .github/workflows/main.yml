@@ -27,6 +27,9 @@ jobs:
       run: |
         Write-Host "GitVersion: $env:GitVersion_SemVer"
 
+        git config user.name 'GitHub Action'
+        git config user.email 'githubaction@users.noreply.github.com'
+
         $gitTags = git tag *>&1
 
         if ($gitTags -contains "v$( $env:GitVersion_SemVer )") {
