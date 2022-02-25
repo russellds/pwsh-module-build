@@ -29,10 +29,8 @@ jobs:
 
         $gitTags = git tag *>&1
 
-        foreach ($gitTag in $gitTags) {
-          if ($gitTag -eq "v$( $env:GitVersion_Major )") {
-            Write-Host 'Tag Found!'
-          } else {
-            Write-Host 'Tag not found!'
-          }
+        if ($gitTags -contains "v$( $env:GitVersion_Major )") {
+          Write-Host 'Tag Found!'
+        } else {
+          Write-Host 'Tag not found!'
         }
