@@ -40,10 +40,15 @@ jobs:
         } else {
           if ($gitTags -contains $tagMajor) {
             Write-Host "Removing Tag: $( $tagMajor )"
-
             git push origin ":refs/tags/$tagMajor"
           }
 
+          Write-Host "Adding tag: $( $tagSemVer )"
           git tag -a -m "Version $( $tagSemVer )" $tagSemVer
+
+          Write-Host "Adding tag: $( $tagMajor )"
           git tag -a -m "Version $( $tagMajor )" $tagMajor
+
+          Write-Host "Pushing tags to remote."
+          git push --follow-tags
         }
