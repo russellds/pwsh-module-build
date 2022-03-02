@@ -67,6 +67,6 @@ runs:
       path: ${{github.workspace}}/PSScriptAnalyzerSettings.psd1
 
 outputs:
-  preReleaseTag:
+  preReleaseLabel:
     description: 'GitVersion Pre-Release Label'
     value: ${{ steps.gitVersion.outputs.preReleaseLabel }}
