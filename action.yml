@@ -68,5 +68,5 @@ runs:
 
 outputs:
   preReleaseTag:
-    description: 'GitVersion Pre-Release Tag'
-    value: ${{ steps.gitVersion.outputs.preReleaseTag }}
+    description: 'GitVersion Pre-Release Label'
+    value: ${{ steps.gitVersion.outputs.preReleaseLabel }}
